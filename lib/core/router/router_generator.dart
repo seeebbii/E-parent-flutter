@@ -1,3 +1,6 @@
+import 'package:e_parent_kit/meta/views/authentication/forgot_password.screen.dart';
+import 'package:e_parent_kit/meta/views/authentication/login.screen.dart';
+import 'package:e_parent_kit/meta/views/authentication/signup.screen.dart';
 import 'package:e_parent_kit/meta/views/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -34,14 +37,21 @@ class RouteGenerator {
 
     switch (settings.name) {
       case splashScreen:
-        return _getPageRoute(const SplashScreen(), splashScreen);
+        return _getPageRoute(const SplashScreen());
 
       // case rootScreen:
       //   return _getPageRoute(const BottomNavigationBarScreen(), rootScreen);
 
+      case loginScreen:
+        return _getPageRoute(const LoginScreen());
 
-      // case orderDetailsScreen:
-      //   return _getPageRoute(const OrderDetailScreen());
+
+      case signupScreen:
+        return _getPageRoute(SignupScreen(isParent: args['isParent'],));
+
+      case forgotPasswordScreen:
+        return _getPageRoute(const ForgotPasswordScreen());
+
 
       // case createAdScreen:
       //   return _getPageRoute(CreateAdScreen(
@@ -54,8 +64,7 @@ class RouteGenerator {
   }
 
   // FUNCTION THAT HANDLES NAVIGATION
-  static PageRoute _getPageRoute(Widget child, routeName) {
-    lastRoute = routeName;
+  static PageRoute _getPageRoute(Widget child,) {
     // return MaterialPageRoute(builder: (ctx) => child);
     return PageTransition(child: child, type: PageTransitionType.fade);
   }

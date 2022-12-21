@@ -32,7 +32,8 @@ class _AppPhoneTextFieldState extends State<AppPhoneTextField> {
         IntlPhoneField(
           flagsButtonPadding: EdgeInsets.symmetric(horizontal: 0.03.sw),
           style: Theme.of(context).textTheme.bodyText1?.copyWith(
-              color: AppTheme.blackColor, textBaseline: TextBaseline.alphabetic),
+              color: AppTheme.blackColor,
+              textBaseline: TextBaseline.alphabetic),
           onSaved: (phone) {
             authenticationScreenVM.setPhoneNumber(phone);
           },
@@ -43,11 +44,11 @@ class _AppPhoneTextFieldState extends State<AppPhoneTextField> {
             try {
               bool isValid = await BaseHelper.isPhoneNoValid(
                   authenticationScreenVM.phoneNumberWithoutCountryCode,
-                  str?.countryISOCode ?? "",
-                  "",
+                  str?.countryISOCode ?? "", "",
                   authenticationScreenVM.countryCode);
 
-              if (authenticationScreenVM.phoneNumberWithoutCountryCode.isEmpty ||
+              if (authenticationScreenVM
+                      .phoneNumberWithoutCountryCode.isEmpty ||
                   authenticationScreenVM.phoneNumberWithoutCountryCode == '') {
                 return "invalid_number".tr;
               }
@@ -67,7 +68,7 @@ class _AppPhoneTextFieldState extends State<AppPhoneTextField> {
               return "invalid_number".tr;
             }
           },
-          disableLengthCheck: true,
+          disableLengthCheck: false,
           controller: authenticationScreenVM.phoneController,
           textInputAction: TextInputAction.next,
           decoration: InputDecoration(
@@ -79,39 +80,41 @@ class _AppPhoneTextFieldState extends State<AppPhoneTextField> {
                       )
                     : const SizedBox.shrink()
                 : const SizedBox.shrink(),
-            fillColor: AppTheme.whiteColor,
+            fillColor: AppTheme.textFieldFillColor,
             filled: true,
-            labelText: 'phone_number'.tr,
+            hintText: 'phone_number'.tr,
+            hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
             labelStyle: Theme.of(context).textTheme.bodyText1,
             floatingLabelStyle: Theme.of(context)
                 .textTheme
                 .bodyText1
                 ?.copyWith(color: AppTheme.primaryColor),
-            border: const UnderlineInputBorder(
-                borderRadius: BorderRadius.all(
-              Radius.circular(10.0),
-            )),
-            focusedBorder: const UnderlineInputBorder(
+            border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(10.0),
               ),
-              borderSide: BorderSide(color: AppTheme.blackColor, width: 1.5),
+              borderSide: BorderSide(color: AppTheme.fieldOutlineColor, width: 1.5),
             ),
-            enabledBorder: UnderlineInputBorder(
+            focusedBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(10.0),
+              ),
+              borderSide: BorderSide(color: AppTheme.primaryColor, width: 1.5),
+            ),
+            enabledBorder: OutlineInputBorder(
               borderRadius: const BorderRadius.all(
                 Radius.circular(10.0),
               ),
-              borderSide: BorderSide(color: AppTheme.fieldOutlineColor, width: 0.0),
+              borderSide: BorderSide(color: AppTheme.fieldOutlineColor, width: 1.5),
             ),
           ),
           dropdownIcon: const Icon(
             Icons.expand_more,
             color: AppTheme.blackColor,
           ),
-          initialCountryCode: 'IQ',
+          initialCountryCode: 'PK',
           onChanged: widget.isSignup
-              ? (phone) {
-                }
+              ? (phone) {}
               : (phone) => debugPrint(phone.completeNumber),
           dropdownIconPosition: IconPosition.trailing,
           pickerDialogStyle: PickerDialogStyle(
@@ -134,7 +137,8 @@ class _AppPhoneTextFieldState extends State<AppPhoneTextField> {
                   borderRadius: BorderRadius.all(
                     Radius.circular(10.0),
                   ),
-                  borderSide: BorderSide(color: AppTheme.blackColor, width: 1.5),
+                  borderSide:
+                      BorderSide(color: AppTheme.blackColor, width: 1.5),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: const BorderRadius.all(
@@ -145,11 +149,23 @@ class _AppPhoneTextFieldState extends State<AppPhoneTextField> {
                 ),
               )),
         ),
-        widget.isSignup && phoneText != '' ? const SizedBox(height: 2,) : const SizedBox.shrink(),
-        widget.isSignup ? Padding(
-          padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-          child: Text(phoneText.tr, style: Theme.of(context).textTheme.bodyText2?.copyWith(color: authenticationScreenVM.phoneNumberAvailable ? AppTheme.green : AppTheme.red),),
-        ) : const SizedBox.shrink(),
+        widget.isSignup && phoneText != ''
+            ? const SizedBox(
+                height: 2,
+              )
+            : const SizedBox.shrink(),
+        widget.isSignup
+            ? Padding(
+                padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                child: Text(
+                  phoneText.tr,
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                      color: authenticationScreenVM.phoneNumberAvailable
+                          ? AppTheme.green
+                          : AppTheme.red),
+                ),
+              )
+            : const SizedBox.shrink(),
       ],
     );
   }

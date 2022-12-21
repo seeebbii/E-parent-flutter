@@ -22,35 +22,36 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
 
     super.initState();
     Provider.of<ConnectionNotifier>(context, listen: false).initConnectivity();
-    // Future.delayed(const Duration(seconds: 3), () {
-    //   // LOGGED IN ? HOME PAGE : AUTH SCREEN
-    //   if(HiveDatabase.getValue(HiveDatabase.loginCheck) == true){
-    //     /// Fetching user's profile if the user is already logged in
-    //     // context.read<AuthenticationNotifier>().fetchUserProfile();
-    //     navigationController.getOffAll(RouteGenerator.rootScreen);
-    //
-    //   }else{
-    //     navigationController.getOffAll(RouteGenerator.loginScreen);
-    //   }
-    // });
+    Future.delayed(const Duration(seconds: 7), () {
+      // LOGGED IN ? HOME PAGE : AUTH SCREEN
+      if(HiveDatabase.getValue(HiveDatabase.loginCheck) == true){
+        /// Fetching user's profile if the user is already logged in
+        // context.read<AuthenticationNotifier>().fetchUserProfile();
+        navigationController.getOffAll(RouteGenerator.rootScreen);
+
+
+      }else{
+        navigationController.getOffAll(RouteGenerator.loginScreen);
+      }
+    });
   }
 
 
   @override
   void dispose() {
     super.dispose();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
   }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: SvgPicture.asset(Assets.splashLogo,)),
+      body: Center(child: Image.asset(Assets.splashLogo,)),
     );
   }
 }

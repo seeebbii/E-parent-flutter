@@ -33,6 +33,14 @@ class AuthenticationScreenVM extends ChangeNotifier{
 
   AuthMethod authMethod = AuthMethod.phone;
 
+  final _loginFormKey = GlobalKey<FormState>();
+  final _signupFormKey = GlobalKey<FormState>();
+  final _forgotPassFormKey = GlobalKey<FormState>();
+
+  GlobalKey<FormState> get loginFormKey => _loginFormKey;
+  GlobalKey<FormState> get signupFormKey => _signupFormKey;
+  GlobalKey<FormState> get forgotPassFormKey => _forgotPassFormKey;
+
   TextEditingController get emailController => _emailController;
   TextEditingController get nameController => _nameController;
   TextEditingController get usernameController => _usernameController;

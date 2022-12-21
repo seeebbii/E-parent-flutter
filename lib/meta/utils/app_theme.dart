@@ -54,7 +54,7 @@ class AppTheme {
 
   static const Color whiteColor = Color(0xFFFFFFFF);
   static const Color blackColor = Color(0xFF1F1F1F);
-  static Color fieldOutlineColor = Colors.grey.shade600;
+  static Color fieldOutlineColor = Colors.grey.shade200;
   static const Color searchHintColor = Color(0xFF888888);
   static const Color textFieldFillColor = Color(0xFFFBFBFB);
   static const Color buyNowButtonColor = Color(0xFFD1F3DD);
