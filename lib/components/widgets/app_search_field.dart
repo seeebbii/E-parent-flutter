@@ -1,5 +1,7 @@
 import 'package:e_parent_kit/meta/utils/app_theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +14,8 @@ class AppSearchTextField extends StatelessWidget {
   int? maxLines;
   int? length;
   TextInputType? type;
-  VoidCallback? onTap = (){};
+  List<TextInputFormatter>? inputFormatters;
+  VoidCallback? onTap = () {};
   dynamic validator;
 
   AppSearchTextField(
@@ -24,7 +27,10 @@ class AppSearchTextField extends StatelessWidget {
       this.showPrefix = true,
       this.maxLines,
       this.length,
-      this.type = TextInputType.name, this.onTap, this.validator})
+      this.type = TextInputType.name,
+      this.onTap,
+      this.inputFormatters,
+      this.validator})
       : super(key: key);
 
   @override
@@ -38,38 +44,51 @@ class AppSearchTextField extends StatelessWidget {
         maxLines: maxLines,
         maxLength: length,
         controller: searchController,
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context).textTheme.bodyLarge,
         obscureText: false,
+        inputFormatters: inputFormatters,
         decoration: InputDecoration(
           isDense: true,
-          fillColor: AppTheme.hintColor.withOpacity(0.2),
+          fillColor: AppTheme.textFieldFillColor,
           filled: true,
           hintText: hintText,
-          hintStyle: Theme.of(context).textTheme.bodyText1,
+          hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
           prefixIcon: showPrefix!
               ? const Icon(
-                  Icons.search,
+                  CupertinoIcons.search,
                   color: AppTheme.blackColor,
                   size: 28,
                 )
               : null,
           border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none),
+            borderRadius: BorderRadius.all(
+              Radius.circular(8.0),
+            ),
+            borderSide:
+                BorderSide(color: AppTheme.fieldOutlineColor, width: 1.5),
+          ),
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(8.0),
+            ),
+            borderSide: BorderSide(color: AppTheme.primaryColor, width: 1.5),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(8.0),
+            ),
+            borderSide:
+                BorderSide(color: AppTheme.fieldOutlineColor, width: 1.5),
+          ),
           suffixIcon: suffixIcon,
         ),
-        validator: validator ?? (val) {
-          if (val!.isEmpty) {
-            return 'required'.tr;
-          }
-          return null;
-        },
+        validator: validator ??
+            (val) {
+              if (val!.isEmpty) {
+                return 'required'.tr;
+              }
+              return null;
+            },
       ),
     );
   }

@@ -26,7 +26,7 @@ class AppSmallElevatedButton extends StatelessWidget {
           buttonText.tr,
           style: Theme.of(context)
               .textTheme
-              .bodyText1
+              .bodyLarge
               ?.copyWith(color: AppTheme.whiteColor),
         ),
       ),

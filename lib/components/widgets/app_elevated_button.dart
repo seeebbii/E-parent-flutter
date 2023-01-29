@@ -44,7 +44,7 @@ class AppElevatedButton extends StatelessWidget {
             onPressed: onPressed,
             child: Text(
               buttonText.tr,
-              style: Theme.of(context).textTheme.headline2?.copyWith(
+              style: Theme.of(context).textTheme.displayMedium?.copyWith(
                   color: textColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 13.sp),

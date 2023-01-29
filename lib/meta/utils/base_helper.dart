@@ -132,7 +132,7 @@ class BaseHelper {
   static AlertDialog confirmationDialog({required BuildContext context,
     required VoidCallback onConfirm, required String alertText}) {
     return AlertDialog(
-      title: Text(alertText, style: Theme.of(context).textTheme.headline3,),
+      title: Text(alertText, style: Theme.of(context).textTheme.displaySmall,),
       actions: [
       TextButton(
           style: TextButton.styleFrom(
@@ -150,10 +150,10 @@ class BaseHelper {
           onPressed: () => navigationController.goBack(),
           child: Text(
             "Cancel",
-            style: Theme.of(context).textTheme.bodyText1?.copyWith(color: AppTheme.primaryColor),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppTheme.primaryColor),
           ),
         ),
-        ElevatedButton(onPressed: onConfirm, child: Text('Confirm', style: Theme.of(context).textTheme.bodyText1?.copyWith(color: AppTheme.whiteColor),),),
+        ElevatedButton(onPressed: onConfirm, child: Text('Confirm', style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppTheme.whiteColor),),),
       ],
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8)

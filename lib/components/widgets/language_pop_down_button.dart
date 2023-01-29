@@ -24,14 +24,14 @@ class LanguagePopDownButton extends StatelessWidget {
               value: 0,
               child: Text(
                 Languages.english,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
             PopupMenuItem<int>(
               value: 1,
               child: Text(
                 Languages.arabic,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
           ];

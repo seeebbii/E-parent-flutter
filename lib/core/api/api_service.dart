@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:e_parent_kit/meta/utils/base_helper.dart';
 import 'package:e_parent_kit/meta/utils/hive_database.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
@@ -23,6 +24,7 @@ class ApiService {
 
   static Future<Map<String, dynamic>?> request(String path,
       {required RequestMethod method, data, queryParameters}) async {
+    log('Path: $path');
     log('method: ${describeEnum(method)}');
     log('queryParameters: $queryParameters');
     log('data: $data');
@@ -56,6 +58,11 @@ class ApiService {
         return response.data;
       }
     } on dio.DioError catch (e) {
+
+      if(e.type == DioErrorType.connectTimeout){
+        BaseHelper.showSnackBar("Connection Timed Out");
+      }
+
       log("$path >>>>> ${e.response}");
       if (e.response?.statusCode != 500) {
         return e.response?.data;

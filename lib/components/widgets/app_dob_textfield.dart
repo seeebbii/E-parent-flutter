@@ -13,7 +13,7 @@ class AppDobTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthenticationScreenVM authenticationScreenVM =
-        context.watch<AuthenticationScreenVM>();
+    context.watch<AuthenticationScreenVM>();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
       child: TextFormField(
@@ -21,7 +21,7 @@ class AppDobTextField extends StatelessWidget {
           FocusScope.of(context).requestFocus(FocusNode());
           _showDatePicker(context, authenticationScreenVM);
         },
-        style: Theme.of(context).textTheme.bodyText1?.copyWith(
+        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: AppTheme.blackColor,
             ),
         controller: authenticationScreenVM.dobController,
@@ -34,13 +34,19 @@ class AppDobTextField extends StatelessWidget {
           floatingLabelBehavior: FloatingLabelBehavior.always,
           labelStyle: Theme.of(context)
               .textTheme
-              .bodyText1
+              .bodyLarge
               ?.copyWith(color: AppTheme.primaryColor),
           floatingLabelStyle: Theme.of(context)
               .textTheme
-              .bodyText1
+              .bodyLarge
               ?.copyWith(color: AppTheme.primaryColor),
-          border: InputBorder.none,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(8.0),
+            ),
+            borderSide:
+            BorderSide(color: AppTheme.fieldOutlineColor, width: 1.5),
+          ),
           hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
           suffixIcon: InkWell(
               onTap: () {
@@ -52,15 +58,18 @@ class AppDobTextField extends StatelessWidget {
                 Icons.calendar_today,
                 color: AppTheme.blackColor,
               )),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: AppTheme.primaryColor, width: 1.0.sp),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(8.0),
+            ),
+            borderSide: BorderSide(color: AppTheme.primaryColor, width: 1.5),
           ),
-          errorBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: AppTheme.errorColor, width: 1.0),
-          ),
-          enabledBorder: UnderlineInputBorder(
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(8.0),
+            ),
             borderSide:
-                BorderSide(color: AppTheme.textFieldUnderline, width: 1.0.sp),
+            BorderSide(color: AppTheme.fieldOutlineColor, width: 1.5),
           ),
         ),
         obscureText: false,
@@ -81,16 +90,16 @@ class AppDobTextField extends StatelessWidget {
       theme: DatePickerTheme(
         doneStyle: Theme.of(context)
             .textTheme
-            .bodyText1!
+            .bodyLarge!
             .copyWith(color: AppTheme.primaryColor),
       ),
       onChanged: (date) {
         authenticationScreenVM.updateDob(
-            DateFormat("dd-MM-yyyy").format(date), date);
+            DateFormat("MM/dd/yyyy").format(date), date);
       },
       onConfirm: (date) {
         authenticationScreenVM.updateDob(
-            DateFormat("dd-MM-yyyy").format(date), date);
+            DateFormat("MM/dd/yyyy").format(date), date);
       },
       // locale: Languages.getLocaleType(),
     );

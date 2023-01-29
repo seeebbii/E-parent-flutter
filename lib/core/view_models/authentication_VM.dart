@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/phone_number.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 enum AuthMethod {
   phone, email
@@ -18,6 +21,7 @@ class AuthenticationScreenVM extends ChangeNotifier{
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _websiteController = TextEditingController();
+  final TextEditingController _otpController = TextEditingController();
 
   // Phone Number Without Country Code
   String phoneNumberWithoutCountryCode = '';
@@ -36,10 +40,12 @@ class AuthenticationScreenVM extends ChangeNotifier{
   final _loginFormKey = GlobalKey<FormState>();
   final _signupFormKey = GlobalKey<FormState>();
   final _forgotPassFormKey = GlobalKey<FormState>();
+  final _otpFormKey = GlobalKey<FormState>();
 
   GlobalKey<FormState> get loginFormKey => _loginFormKey;
   GlobalKey<FormState> get signupFormKey => _signupFormKey;
   GlobalKey<FormState> get forgotPassFormKey => _forgotPassFormKey;
+  GlobalKey<FormState> get otpFormKey => _otpFormKey;
 
   TextEditingController get emailController => _emailController;
   TextEditingController get nameController => _nameController;
@@ -50,6 +56,10 @@ class AuthenticationScreenVM extends ChangeNotifier{
   TextEditingController get dobController => _dobController;
   TextEditingController get bioController => _bioController;
   TextEditingController get websiteController => _websiteController;
+  TextEditingController get otpController => _otpController;
+
+
+  StreamController<ErrorAnimationType> otpErrorController = StreamController<ErrorAnimationType>();
 
   bool get isPassVisible => _isPassVisible;
   bool get isRePassVisible => _isRePassVisible;
@@ -57,6 +67,7 @@ class AuthenticationScreenVM extends ChangeNotifier{
   int get genderRadioValue => _genderRadioValue;
 
   bool keepLoggedIn = true;
+  bool adminRights = false;
 
   // Availability Check Variables
   bool usernameCheckInProgress = false;
@@ -100,6 +111,11 @@ class AuthenticationScreenVM extends ChangeNotifier{
 
   void updateKeepLoggedIn(bool val){
     keepLoggedIn = val;
+    notifyListeners();
+  }
+
+  void updateAdminRights(bool val){
+    adminRights = val;
     notifyListeners();
   }
 

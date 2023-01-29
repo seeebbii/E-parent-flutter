@@ -11,6 +11,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/models/authentication/auth_data.model.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -25,15 +27,14 @@ class _SplashScreenState extends State<SplashScreen> {
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
 
     super.initState();
+    AuthenticationNotifier authNotifier = context.read<AuthenticationNotifier>();
     Provider.of<ConnectionNotifier>(context, listen: false).initConnectivity();
-    Future.delayed(const Duration(seconds: 7), () {
+    Future.delayed(const Duration(seconds: 7), () async {
       // LOGGED IN ? HOME PAGE : AUTH SCREEN
       if(HiveDatabase.getValue(HiveDatabase.loginCheck) == true){
         /// Fetching user's profile if the user is already logged in
-        // context.read<AuthenticationNotifier>().fetchUserProfile();
-        navigationController.getOffAll(RouteGenerator.rootScreen);
-
-
+        await authNotifier.fetchProfile();
+        authNotifier.afterAuthHandler(context);
       }else{
         navigationController.getOffAll(RouteGenerator.loginScreen);
       }

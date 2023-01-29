@@ -3,12 +3,14 @@ import 'package:e_parent_kit/app/constants/controller.constant.dart';
 import 'package:e_parent_kit/components/widgets/app_appbar.dart';
 import 'package:e_parent_kit/components/widgets/app_divider.dart';
 import 'package:e_parent_kit/components/widgets/app_elevated_button.dart';
+import 'package:e_parent_kit/core/notifiers/authentication.notifier.dart';
 import 'package:e_parent_kit/core/router/router_generator.dart';
 import 'package:e_parent_kit/core/view_models/authentication_VM.dart';
 import 'package:e_parent_kit/meta/utils/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -25,20 +27,35 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   void _trySubmit() async {
-    final isValid = context.read<AuthenticationScreenVM>().loginFormKey.currentState!.validate();
+
+    print(DateTime.now().toIso8601String());
+    AuthenticationScreenVM authVm =
+        Provider.of<AuthenticationScreenVM>(context, listen: false);
+
+    final isValid = context
+        .read<AuthenticationScreenVM>()
+        .loginFormKey
+        .currentState!
+        .validate();
     FocusScope.of(context).unfocus();
 
-    if(isValid){
+    if (isValid) {
+      EasyLoading.show();
 
+      await context.read<AuthenticationNotifier>().login(
+          phone: authVm.countryCode + authVm.phoneController.text.trim(),
+          password: authVm.passwordController.text.trim(),
+          rememberMe: authVm.keepLoggedIn, context: context);
+
+      EasyLoading.dismiss();
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
-    AuthenticationScreenVM authenticationScreenVM = context.watch<AuthenticationScreenVM>();
+    AuthenticationScreenVM authenticationScreenVM =
+        context.watch<AuthenticationScreenVM>();
     return Scaffold(
       appBar: AppAppbar(),
       body: SingleChildScrollView(
@@ -63,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Text(
                   "E Parent School Kit",
-                  style: Theme.of(context).textTheme.headline1,
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
                 SizedBox(
                   height: 0.05.sh,
@@ -78,7 +95,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: 'Enter your password',
                   validationMsg: 'Please enter your password',
                   isPass: true,
-                  isOptional: false, onChange: (str){}, prefixIcon: CupertinoIcons.lock,
+                  isOptional: false,
+                  onChange: (str) {},
+                  prefixIcon: CupertinoIcons.lock,
                 ),
                 SizedBox(
                   height: 0.01.sh,
@@ -94,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       "keep_logged_in".tr,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyLarge
                           ?.copyWith(color: AppTheme.blackColor),
                     ),
                     value: authenticationScreenVM.keepLoggedIn,
@@ -125,12 +144,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
-                    onTap: () => navigationController.navigateToNamed(RouteGenerator.forgotPasswordScreen,),
+                    onTap: () => navigationController.navigateToNamed(
+                      RouteGenerator.forgotPasswordScreen,
+                    ),
                     child: Text(
                       "forgot_password".tr,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyLarge
                           ?.copyWith(color: AppTheme.primaryColor),
                     ),
                   ),
@@ -151,26 +172,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: 'dont_have_an_account'.tr,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText1
+                        .bodyLarge
                         ?.copyWith(color: AppTheme.blackColor),
                     children: [
                       TextSpan(
                           text: 'signup'.tr,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1
+                              .bodyLarge
                               ?.copyWith(
-                              color: AppTheme.primaryColor,
-                              fontWeight: FontWeight.bold),
+                                  color: AppTheme.primaryColor,
+                                  fontWeight: FontWeight.bold),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              navigationController
-                                  .navigateToNamedWithArg(RouteGenerator.signupScreen, {'isParent': true});
+                              navigationController.navigateToNamedWithArg(
+                                  RouteGenerator.signupScreen,
+                                  {'isParent': false});
                             })
                     ]),
               ),
             ),
-
           ],
         ),
       ),

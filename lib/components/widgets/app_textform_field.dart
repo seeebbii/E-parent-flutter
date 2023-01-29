@@ -42,7 +42,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
       child: TextFormField(
-        style: Theme.of(context).textTheme.bodyText1?.copyWith(color: AppTheme.blackColor,  textBaseline: TextBaseline.alphabetic),
+        style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppTheme.blackColor,  textBaseline: TextBaseline.alphabetic),
         controller: widget.controller,
         cursorWidth: 1,
         textInputAction: widget.action,
@@ -53,8 +53,8 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
         decoration: InputDecoration(
           labelText: widget.hintText,
           hintText: widget.hintText,
-          labelStyle: Theme.of(context).textTheme.bodyText1,
-          floatingLabelStyle: Theme.of(context).textTheme.bodyText1?.copyWith(color: AppTheme.primaryColor),
+          labelStyle: Theme.of(context).textTheme.bodyLarge,
+          floatingLabelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppTheme.primaryColor),
           border: InputBorder.none,
           hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
           suffixIcon: widget.suffixIcon,

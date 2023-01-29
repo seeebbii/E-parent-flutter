@@ -3,12 +3,15 @@ import 'package:e_parent_kit/app/constants/controller.constant.dart';
 import 'package:e_parent_kit/components/widgets/app_appbar.dart';
 import 'package:e_parent_kit/components/widgets/app_divider.dart';
 import 'package:e_parent_kit/components/widgets/app_elevated_button.dart';
+import 'package:e_parent_kit/core/notifiers/authentication.notifier.dart';
 import 'package:e_parent_kit/core/router/router_generator.dart';
 import 'package:e_parent_kit/core/view_models/authentication_VM.dart';
 import 'package:e_parent_kit/meta/utils/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -19,6 +22,7 @@ import '../../../components/widgets/app_simple_text_field.dart';
 
 class SignupScreen extends StatefulWidget {
   final bool isParent;
+
   const SignupScreen({Key? key, this.isParent = true}) : super(key: key);
 
   @override
@@ -28,18 +32,34 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
 
   void _trySubmit() async {
-    final isValid = context.read<AuthenticationScreenVM>().signupFormKey.currentState!.validate();
+    AuthenticationScreenVM authVM = Provider.of(context, listen: false);
+    final isValid = context
+        .read<AuthenticationScreenVM>()
+        .signupFormKey
+        .currentState!
+        .validate();
     FocusScope.of(context).unfocus();
 
-    if(isValid){
+    if (isValid) {
+      EasyLoading.show();
+      print(authVM.phoneNumberWithoutCountryCode);
 
+      await context.read<AuthenticationNotifier>().register(isParent: widget.isParent,
+          fullName: authVM.nameController.text.trim(),
+          email: authVM.emailController.text.trim(),
+          password: authVM.passwordController.text.trim(),
+          phone: authVM.phoneNumberWithoutCountryCode,
+          countryCode: authVM.countryCode,
+          adminRights: authVM.adminRights);
+
+      EasyLoading.dismiss();
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
-    AuthenticationScreenVM authenticationScreenVM = context.watch<AuthenticationScreenVM>();
+    AuthenticationScreenVM authenticationScreenVM = context.watch<
+        AuthenticationScreenVM>();
     return Scaffold(
       appBar: AppAppbar(),
       body: SingleChildScrollView(
@@ -63,8 +83,13 @@ class _SignupScreenState extends State<SignupScreen> {
                   height: 0.02.sh,
                 ),
                 Text(
-                  widget.isParent ? "Register as a Parent" : "Register as a Teacher",
-                  style: Theme.of(context).textTheme.headline1,
+                  widget.isParent
+                      ? "Register as a Parent"
+                      : "Register as a Teacher",
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .displayLarge,
                 ),
                 SizedBox(
                   height: 0.05.sh,
@@ -83,7 +108,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   height: 0.01.sh,
                 ),
                 AppSimpleTextField(
-                  controller: authenticationScreenVM.usernameController,
+                  controller: authenticationScreenVM.nameController,
                   keyboard: TextInputType.text,
                   hintText: 'Enter your full name',
                   validationMsg: 'Please enter your full name',
@@ -92,6 +117,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   isOptional: false,
                   onChange: (str) {},
                   prefixIcon: CupertinoIcons.person,
+
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp("[a-z A-Z]")),
+                  ],
                 ),
                 SizedBox(
                   height: 0.01.sh,
@@ -113,7 +142,21 @@ class _SignupScreenState extends State<SignupScreen> {
                 SizedBox(
                   height: 0.01.sh,
                 ),
-                Padding(
+                AppSimpleTextField(
+                  controller: authenticationScreenVM.rePasswordController,
+                  keyboard: TextInputType.text,
+                  hintText: 'Re-Enter your password',
+                  validationMsg: 'Password does not match',
+                  isPass: true,
+                  isRePass: true,
+                  isOptional: false,
+                  onChange: (str) {},
+                  prefixIcon: CupertinoIcons.lock,
+                ),
+                SizedBox(
+                  height: 0.01.sh,
+                ),
+                widget.isParent ? const SizedBox.shrink() : Padding(
                   padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                   child: CheckboxListTile(
                     checkboxShape: const CircleBorder(),
@@ -121,18 +164,19 @@ class _SignupScreenState extends State<SignupScreen> {
                         borderRadius: BorderRadius.circular(10)),
                     contentPadding: EdgeInsets.zero,
                     title: Text(
-                      "keep_logged_in".tr,
-                      style: Theme.of(context)
+                      "Admin Rights".tr,
+                      style: Theme
+                          .of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyLarge
                           ?.copyWith(color: AppTheme.blackColor),
                     ),
-                    value: authenticationScreenVM.keepLoggedIn,
+                    value: authenticationScreenVM.adminRights,
                     checkColor: AppTheme.whiteColor,
                     activeColor: AppTheme.primaryColor,
                     onChanged: (bool? newValue) {
-                      authenticationScreenVM
-                          .updateKeepLoggedIn(newValue ?? false);
+                      authenticationScreenVM.updateAdminRights(
+                          newValue ?? false);
                     },
                     controlAffinity: ListTileControlAffinity.leading,
                   ),
@@ -166,19 +210,21 @@ class _SignupScreenState extends State<SignupScreen> {
               child: RichText(
                 text: TextSpan(
                     text: 'Already have an account?',
-                    style: Theme.of(context)
+                    style: Theme
+                        .of(context)
                         .textTheme
-                        .bodyText1
+                        .bodyLarge
                         ?.copyWith(color: AppTheme.blackColor),
                     children: [
                       TextSpan(
                           text: ' Login',
-                          style: Theme.of(context)
+                          style: Theme
+                              .of(context)
                               .textTheme
-                              .bodyText1
+                              .bodyLarge
                               ?.copyWith(
-                                  color: AppTheme.primaryColor,
-                                  fontWeight: FontWeight.bold),
+                              color: AppTheme.primaryColor,
+                              fontWeight: FontWeight.bold),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               navigationController.goBack();

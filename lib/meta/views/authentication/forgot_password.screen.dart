@@ -36,7 +36,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     FocusScope.of(context).unfocus();
 
     if(isValid){
-
+      // Send OTP api and prompt user to OTP verification screen
+      navigationController.navigateToNamed(RouteGenerator.changePassword);
     }
   }
 
@@ -66,7 +67,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     Align(
                       alignment: FractionalOffset.topLeft,
                       child: Text('Forgot password?',
-                          style: Theme.of(context).textTheme.headline3),
+                          style: Theme.of(context).textTheme.displaySmall),
                     ),
 
                     SizedBox(
@@ -76,7 +77,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       alignment: FractionalOffset.topLeft,
                       child: Text(
                           'Please enter your username, we will send OTP to your registered number.',
-                          style: Theme.of(context).textTheme.bodyText1),
+                          style: Theme.of(context).textTheme.bodyLarge),
                     ),
                     SizedBox(
                       height: 0.02.sh,

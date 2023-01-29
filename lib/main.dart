@@ -20,7 +20,7 @@ void main() async {
   await SharedPref.init();
   await ConnectionNotifier().initConnectivity();
   await HiveDatabase.init();
-  // NotificationInitilization.initializePushNotifications();
+  NotificationInitilization.initializePushNotifications();
   Languages.init();
   runApp(const MyApp());
 }

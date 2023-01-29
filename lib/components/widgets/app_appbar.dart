@@ -8,6 +8,7 @@ class AppAppbar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
   bool isTitleText;
   Widget titleWidget;
+  Widget? leadingWidget;
   bool leading;
   bool centerTitle;
   Color bgColor;
@@ -19,6 +20,7 @@ class AppAppbar extends StatelessWidget with PreferredSizeWidget {
   AppAppbar(
       {Key? key,
       this.title,
+      this.leadingWidget,
       this.bgColor = AppTheme.whiteColor,
       this.leading = true,
       this.centerTitle = false,
@@ -36,6 +38,7 @@ class AppAppbar extends StatelessWidget with PreferredSizeWidget {
       iconTheme: const IconThemeData(
         color: AppTheme.blackColor,
       ),
+      leading: leadingWidget,
       elevation: elevation,
       automaticallyImplyLeading: leading,
       centerTitle: centerTitle,
@@ -46,7 +49,7 @@ class AppAppbar extends StatelessWidget with PreferredSizeWidget {
           ? Text("$title",
               style: Theme.of(context)
                   .textTheme
-                  .headline3
+                  .displayMedium
                   ?.copyWith(fontWeight: FontWeight.bold))
           : titleWidget,
       actions: actions,

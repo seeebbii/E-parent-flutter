@@ -1,5 +1,6 @@
 import 'package:e_parent_kit/meta/utils/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/view_models/authentication_VM.dart';
@@ -17,10 +18,14 @@ class AppSimpleTextField extends StatelessWidget {
   final bool isReadOnly;
   final bool isOptional;
   final int minLength;
-  final int maxLength;
+  bool enabled;
+  int? maxLength;
+  final int maxLines;
+  final TextInputAction textInputAction;
   final IconData prefixIcon;
   final TextInputType keyboard;
   final String validationMsg;
+  List<TextInputFormatter>? inputFormatters;
   VoidCallback? onTap;
   Function onChange;
 
@@ -36,8 +41,12 @@ class AppSimpleTextField extends StatelessWidget {
       this.isRePass = false,
       this.isReadOnly = false,
       this.isOptional = false,
+      this.enabled = true,
       this.minLength = 1,
-      this.maxLength = 1,
+      this.maxLength,
+      this.maxLines = 1,
+      this.textInputAction = TextInputAction.next,
+      this.inputFormatters,
       required this.onChange,
       required this.prefixIcon,
       required this.keyboard,
@@ -57,9 +66,11 @@ class AppSimpleTextField extends StatelessWidget {
     }
 
     return TextFormField(
+      enabled: enabled,
         onTap: onTap,
         minLines: minLength,
-        maxLines: maxLength,
+        maxLines: maxLines,
+        maxLength: maxLength,
         readOnly: isReadOnly,
         validator: isOptional != true
             ? (value) {
@@ -70,8 +81,8 @@ class AppSimpleTextField extends StatelessWidget {
                     return ('Email is not valid!');
                   }
                 } else if (isName) {
-                  if (value.length < 10) {
-                    return ('Name characters should be less then 10');
+                  if (value.length > 25) {
+                    return ('Name characters should be less then 25');
                   }
                 } else if (isPass) {
                   if (value.length < 8) {
@@ -92,10 +103,11 @@ class AppSimpleTextField extends StatelessWidget {
             : (value) {
                 return null;
               },
-        textInputAction: TextInputAction.done,
-        onChanged: (str)=> onChange(str),
+        textInputAction: textInputAction,
+        onChanged: (str) => onChange(str),
         keyboardType: keyboard,
         controller: controller,
+        inputFormatters: inputFormatters,
         obscureText: isPass
             ? loginScreenVM.isPassVisible
             : isRePass
@@ -110,7 +122,8 @@ class AppSimpleTextField extends StatelessWidget {
             borderRadius: BorderRadius.all(
               Radius.circular(8.0),
             ),
-            borderSide: BorderSide(color: AppTheme.fieldOutlineColor, width: 1.5),
+            borderSide:
+                BorderSide(color: AppTheme.fieldOutlineColor, width: 1.5),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
@@ -122,7 +135,8 @@ class AppSimpleTextField extends StatelessWidget {
             borderRadius: BorderRadius.all(
               Radius.circular(8.0),
             ),
-            borderSide: BorderSide(color: AppTheme.fieldOutlineColor, width: 1.5),
+            borderSide:
+                BorderSide(color: AppTheme.fieldOutlineColor, width: 1.5),
           ),
           hintText: hintText,
           hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,

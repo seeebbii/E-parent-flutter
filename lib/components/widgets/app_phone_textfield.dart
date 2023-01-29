@@ -5,6 +5,7 @@ import 'package:e_parent_kit/core/view_models/authentication_VM.dart';
 import 'package:e_parent_kit/meta/utils/app_theme.dart';
 import 'package:e_parent_kit/meta/utils/base_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
@@ -31,7 +32,7 @@ class _AppPhoneTextFieldState extends State<AppPhoneTextField> {
       children: [
         IntlPhoneField(
           flagsButtonPadding: EdgeInsets.symmetric(horizontal: 0.03.sw),
-          style: Theme.of(context).textTheme.bodyText1?.copyWith(
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: AppTheme.blackColor,
               textBaseline: TextBaseline.alphabetic),
           onSaved: (phone) {
@@ -68,6 +69,9 @@ class _AppPhoneTextFieldState extends State<AppPhoneTextField> {
               return "invalid_number".tr;
             }
           },
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+          ],
           disableLengthCheck: false,
           controller: authenticationScreenVM.phoneController,
           textInputAction: TextInputAction.next,
@@ -84,10 +88,10 @@ class _AppPhoneTextFieldState extends State<AppPhoneTextField> {
             filled: true,
             hintText: 'phone_number'.tr,
             hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
-            labelStyle: Theme.of(context).textTheme.bodyText1,
+            labelStyle: Theme.of(context).textTheme.bodyLarge,
             floatingLabelStyle: Theme.of(context)
                 .textTheme
-                .bodyText1
+                .bodyLarge
                 ?.copyWith(color: AppTheme.primaryColor),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
@@ -120,13 +124,13 @@ class _AppPhoneTextFieldState extends State<AppPhoneTextField> {
           pickerDialogStyle: PickerDialogStyle(
               countryNameStyle: Theme.of(context)
                   .textTheme
-                  .bodyText2
+                  .bodyMedium
                   ?.copyWith(fontWeight: FontWeight.w500, fontSize: 14.sp),
               searchFieldInputDecoration: InputDecoration(
-                labelStyle: Theme.of(context).textTheme.bodyText1,
+                labelStyle: Theme.of(context).textTheme.bodyLarge,
                 floatingLabelStyle: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .bodyLarge
                     ?.copyWith(color: AppTheme.primaryColor),
                 hintText: "search_country".tr,
                 border: const OutlineInputBorder(
@@ -159,7 +163,7 @@ class _AppPhoneTextFieldState extends State<AppPhoneTextField> {
                 padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                 child: Text(
                   phoneText.tr,
-                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: authenticationScreenVM.phoneNumberAvailable
                           ? AppTheme.green
                           : AppTheme.red),

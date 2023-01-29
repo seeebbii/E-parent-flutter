@@ -33,6 +33,7 @@ class AppTheme {
   static Color orderPriceBorder = const Color(0xFF8EB103);
   static Color orderPriceBG = const Color(0xFF98F500);
   static Color dialogBG = const Color(0xFFECFFA1);
+  static Color appBackgroundColor = Colors.grey.shade200;
 
   static const Color darkBackgroundColor = Color(0xFF181C1E);
   static const Color lightGray = Color(0xFFE1E1E1);
@@ -148,35 +149,34 @@ class AppTheme {
 
   static ThemeData get lightTheme {
     return ThemeData(
+      // useMaterial3: true,
       textTheme: TextTheme(
-        headline1: TextStyle(
+        displayLarge: TextStyle(
           fontSize: 28.sp,
           fontWeight: FontWeight.bold,
           color: blackColor,
         ),
-        headline2: TextStyle(
+        displayMedium: TextStyle(
           fontSize: 23.sp,
           color: blackColor,
           fontWeight: FontWeight.bold,
         ),
-        headline3: TextStyle(
+        displaySmall: TextStyle(
             fontSize: 17.sp, color: blackColor, fontWeight: FontWeight.w500),
-        bodyText1: TextStyle(
+        bodyLarge: TextStyle(
           fontSize: 14.sp,
           color: blackColor,
         ),
-        bodyText2: TextStyle(
+        bodyMedium: TextStyle(
           fontSize: 12.sp,
           color: blackColor,
         ),
       ),
       primaryColor: lightBackgroundColor,
-      backgroundColor: lightBackgroundColor,
       scaffoldBackgroundColor: lightBackgroundColor,
       primaryColorLight: const Color(0xFFF1F1F1),
       splashColor: splashColor,
       brightness: Brightness.light,
-      errorColor: errorColor,
       highlightColor: splashColor,
       focusColor: primaryColor,
       iconTheme: const IconThemeData(color: Colors.black),
@@ -202,14 +202,13 @@ class AppTheme {
         ),
       ),
       textSelectionTheme:
-          const TextSelectionThemeData(cursorColor: primaryColor),
-      colorScheme: ColorScheme.fromSwatch()
+          const TextSelectionThemeData(cursorColor: primaryColor), colorScheme: ColorScheme.fromSwatch()
           .copyWith(
             secondary: const Color(0xFF79A6DC),
             brightness: Brightness.light,
           )
           .copyWith(secondary: primaryColor)
-          .copyWith(secondary: primaryColor),
+          .copyWith(secondary: primaryColor).copyWith(background: lightBackgroundColor).copyWith(error: errorColor),
     );
   }
 }

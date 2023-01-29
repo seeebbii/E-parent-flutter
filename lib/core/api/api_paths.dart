@@ -1,60 +1,64 @@
 
 
 class ApiPaths {
-  static String liveBaseURL = "https://socialapp.e_parent_kit.com/api/";
-  static String baseURL = liveBaseURL;
+  static String liveBaseURL = "https://e-parent-kit.herokuapp.com/api/";
+  static String localBaseUrl = "http://10.0.2.2:8080/api/";
+  static String socketBaseUrl = "http://10.0.2.2:8080/";
+  // static String socketBaseUrl = "https://e-parent-kit.herokuapp.com/";
+  static String baseURL = localBaseUrl;
 
-  // endpoints
-  // static String rider = "rider/";
+  // Endpoints
+  static String authRoute =  "auth/";
+  static String courseRoute =  "course/";
+  static String classRoute =  "class/";
+  static String teacherRoute =  "teacher/";
+  static String studentRoute =  "student/";
+  static String parentRoute =  "parent/";
+  static String chatRoute =  "chat/";
 
   // User Auth Apis
-  static String login =  "${baseURL}login";
-  static String socialLogin =  "${baseURL}social_login";
-  static String register =  "${baseURL}register";
+  static String login =  "${baseURL}${authRoute}login";
+  static String register =  "${baseURL}${authRoute}register";
+  static String profile =  "${baseURL}${authRoute}profile";
+  static String userNotifications =  "${baseURL}${authRoute}notifications";
+  static String updateNotificationStatus =  "${baseURL}${authRoute}update_notification_status";
   static String requestOtp =  "${baseURL}request_otp";
-  static String verifyOtp =  "${baseURL}verify_otp";
+  static String verifyOtp =  "${baseURL}${authRoute}verify";
   static String resetPassword =  "${baseURL}reset_password";
   static String logout =  "${baseURL}logout";
 
-  // User Profile Apis
-  static String checkUsername =  "${baseURL}check_username";
-  static String checkNumber =  "${baseURL}check_number";
-  static String checkEmail =  "${baseURL}check_email";
-  static String getUserProfile =  "${baseURL}get_user_profile";
-  static String getOtherUserProfile =  "${baseURL}get_profile";
-  static String followUnfollow =  "${baseURL}follow_unfollow";
-  static String updateUserProfileImage =  "${baseURL}update_profile_image";
-  static String updateUserProfile =  "${baseURL}update_profile";
-  static String fetchUserFollowing =  "${baseURL}following/list";
-  static String fetchUserFollowers =  "${baseURL}followers/list";
+  // Student Apis
+  static String fetchStudents =  "${baseURL}${studentRoute}";
+  static String createStudent =  "${baseURL}${studentRoute}add";
+  static String manageEnrollment =  "${baseURL}${studentRoute}insert_courses";
+  static String fetchStudentsForEnrollment =  "${baseURL}${studentRoute}manage_enrollment/search/";
+
+  // Teacher Apis
+  static String addCourses =  "${baseURL}${teacherRoute}add_courses";
+  static String getAllTeachers =  "${baseURL}${teacherRoute}";
+
+
+  // Parent Apis
+  static String addStudents =  "${baseURL}${parentRoute}add_students";
+
+  // Course apis
+  static String fetchCourses =  "${baseURL}${courseRoute}";
+  static String createCourse =  "${baseURL}${courseRoute}insert";
+
+  // Class apis
+  static String fetchClasses =  "${baseURL}${classRoute}";
+  static String createClass =  "${baseURL}${classRoute}insert";
+  static String studentsInClass =  "${baseURL}${classRoute}students_in_class/";
+  static String getTeacherClassDiary =  "${baseURL}${classRoute}view_teacher_class_diaries";
+  static String getStudentClassDiary =  "${baseURL}${classRoute}view_class_diaries/";
+  static String assignStudents =  "${baseURL}${classRoute}assign_students/";
+  static String updateClassTeacher =  "${baseURL}${classRoute}update_class_teacher/";
 
   // Chat Apis
-  static String getUserChats =  "${baseURL}getContacts";
-  static String getMessages =  "${baseURL}fetchMessages";
-  static String sendMessages =  "${baseURL}sendMessage";
-
-  // Feed Apis
-  static String fetchPosts =  "${baseURL}get_all_post";
-  static String fetchAnonymousPosts =  "${baseURL}get_all_anonymous_post";
-  static String fetchExplore =  "${baseURL}get_all_post_images";
-  static String fetchReels =  "${baseURL}get_all_post_vedios";
-  static String fetchReportList =  "${baseURL}report/message/list";
-  static String reportAbuse =  "${baseURL}abuse/report/post";
-  static String deletePost =  "${baseURL}delete_post";
-  static String fetchStories =  "${baseURL}new_get_stories";
-  static String postComments =  "${baseURL}post_comments";
-  static String addComment =  "${baseURL}comment_add";
-  static String likePost =  "${baseURL}like_post";
-
-  // Upload Apis
-  static String uploadPost =  "${baseURL}create_user_post";
-  static String updatePost =  "${baseURL}update_user_post";
-  static String uploadAnonymousPost = "${baseURL}create_anonymous_post";
-  static String uploadStory =  "${baseURL}save_user_story";
-
-  // Tag apis
-  static String searchTag =  "${baseURL}search_tag";
-  static String searchMentions =  "${baseURL}get_users";
-
+  static String fetchAdminChats =  "${baseURL}${chatRoute}admin/";
+  static String fetchUserChats =  "${baseURL}${chatRoute}";
+  static String createChatRoom =  "${baseURL}${chatRoute}create_room";
+  static String fetchMessages =  "${baseURL}${chatRoute}messages";
+  static String sendMessage =  "${baseURL}${chatRoute}send_message";
 
 }

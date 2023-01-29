@@ -1,4 +1,5 @@
 import 'package:e_parent_kit/meta/utils/app_theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppCircularIndicatorWidget extends StatelessWidget {
@@ -6,6 +7,9 @@ class AppCircularIndicatorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const Center(
+      child: CupertinoActivityIndicator(),
+    );
     return const Center(
       child: CircularProgressIndicator(
         color: AppTheme.primaryColor,
