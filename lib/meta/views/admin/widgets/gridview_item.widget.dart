@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GridviewItemWidget extends StatelessWidget {
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String imagePath;
   final String text;
   final Color color;

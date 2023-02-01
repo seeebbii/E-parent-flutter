@@ -19,10 +19,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/models/class/class.model.dart';
+import 'classes/view_my_class.screen.dart';
 
 class TeacherNavbarScreen extends StatefulWidget {
   const TeacherNavbarScreen({Key? key}) : super(key: key);
@@ -106,8 +108,10 @@ class _TeacherNavbarScreenState extends State<TeacherNavbarScreen> {
                             Diary diary = classNotifier.teacherClassDiary.diary![itemIndex];
                             return GestureDetector(
                               onTap: () {
-                                log("${DateFormat("MM/dd/yyyy").format(DateTime.now())}");
-                                log("${DateTime.now().toIso8601String()}");
+                                print(diary.currentDate);
+                                log("${DateFormat("MM/dd/yyyy").format(DateTime.parse(diary.currentDate!))}");
+
+                                // log("${DateTime.now().toIso8601String()}");
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -117,45 +121,43 @@ class _TeacherNavbarScreenState extends State<TeacherNavbarScreen> {
                                     vertical: 0.01.sh, horizontal: 0.02.sw),
                                 child: SingleChildScrollView(
                                   physics: const BouncingScrollPhysics(),
-                                  child: Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                                      children: [
-                                        Text(
-                                          "Daily Diary: ${diary.classId?.grade}${diary.classId?.section}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displaySmall
-                                              ?.copyWith(fontWeight: FontWeight.bold),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      Text(
+                                        "Daily Diary: ${diary.classId?.grade}${diary.classId?.section} (${BaseHelper.formatDateWithMonth(DateTime.parse(diary.currentDate!))})",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall
+                                            ?.copyWith(fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 0.01.sh,
+                                      ),
+                                      Text(
+                                        "${diary.diary}",
+                                        // maxLines: 10,
+                                        style:
+                                        Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                          fontSize: 16,
+                                          overflow: TextOverflow.fade,
                                         ),
-                                        SizedBox(
-                                          height: 0.01.sh,
-                                        ),
-                                        Text(
-                                          "${diary.diary}",
-                                          // maxLines: 10,
+                                      ),
+                                      SizedBox(
+                                        height: 0.02.sh,
+                                      ),
+                                      Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Text(
+                                          "Updated On: ${BaseHelper.formatDateWithMonth(DateTime.parse(diary.createdAt!))}",
                                           style:
-                                          Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                            fontSize: 16,
-                                            overflow: TextOverflow.fade,
+                                          Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                            overflow: TextOverflow.ellipsis,
+                                            fontWeight: FontWeight.bold
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: 0.02.sh,
-                                        ),
-                                        Align(
-                                          alignment: Alignment.bottomRight,
-                                          child: Text(
-                                            "Updated On: ${BaseHelper.formatDateWithMonth(DateTime.parse(diary.currentDate!))}",
-                                            style:
-                                            Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                              overflow: TextOverflow.ellipsis,
-                                              fontWeight: FontWeight.bold
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -251,7 +253,7 @@ class _TeacherNavbarScreenState extends State<TeacherNavbarScreen> {
                               highlightColor: Colors.transparent,
                               onTap: () {
                                 classNotifier.assignClass(classItem);
-                                navigationController.goBack();
+                                Get.to(() => ViewMyClassScreen());
                               },
                               child: Card(
                                 elevation: 0,

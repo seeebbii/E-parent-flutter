@@ -2,6 +2,7 @@ import 'package:e_parent_kit/app/constants/assets.constant.dart';
 import 'package:e_parent_kit/app/constants/controller.constant.dart';
 import 'package:e_parent_kit/components/widgets/app_appbar.dart';
 import 'package:e_parent_kit/components/widgets/app_elevated_button.dart';
+import 'package:e_parent_kit/core/notifiers/authentication.notifier.dart';
 import 'package:e_parent_kit/meta/utils/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -17,17 +18,17 @@ import '../../../components/widgets/app_simple_text_field.dart';
 import '../../../core/view_models/authentication_VM.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
-  const ChangePasswordScreen({Key? key}) : super(key: key);
+  final bool forgot;
+
+  const ChangePasswordScreen({Key? key, this.forgot = true}) : super(key: key);
 
   @override
   State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-
-
   void _trySubmit() async {
-    AuthenticationScreenVM authVM = Provider.of(context, listen: false);
+    AuthenticationScreenVM authVm = Provider.of(context, listen: false);
     final isValid = context
         .read<AuthenticationScreenVM>()
         .signupFormKey
@@ -38,14 +39,26 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     if (isValid) {
       EasyLoading.show();
 
+      if (widget.forgot) {
+        await context.read<AuthenticationNotifier>().changePassword(
+            authVm.countryCode + authVm.phoneController.text.trim(),
+            authVm.passwordController.text.trim(),
+            widget.forgot);
+      } else {
+        await context.read<AuthenticationNotifier>().changePassword(
+            context.read<AuthenticationNotifier>().authModel.user!.completePhone!,
+            authVm.passwordController.text.trim(),
+            widget.forgot);
+      }
+
       EasyLoading.dismiss();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    AuthenticationScreenVM authenticationScreenVM = context.watch<
-        AuthenticationScreenVM>();
+    AuthenticationScreenVM authenticationScreenVM =
+        context.watch<AuthenticationScreenVM>();
     return Scaffold(
       appBar: AppAppbar(),
       body: SingleChildScrollView(
@@ -70,10 +83,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 ),
                 Text(
                   "Change Password",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .displayLarge,
+                  style: Theme.of(context).textTheme.displayLarge,
                 ),
                 SizedBox(
                   height: 0.05.sh,

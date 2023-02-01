@@ -156,31 +156,31 @@ class _SignupScreenState extends State<SignupScreen> {
                 SizedBox(
                   height: 0.01.sh,
                 ),
-                widget.isParent ? const SizedBox.shrink() : Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                  child: CheckboxListTile(
-                    checkboxShape: const CircleBorder(),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      "Admin Rights".tr,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .bodyLarge
-                          ?.copyWith(color: AppTheme.blackColor),
-                    ),
-                    value: authenticationScreenVM.adminRights,
-                    checkColor: AppTheme.whiteColor,
-                    activeColor: AppTheme.primaryColor,
-                    onChanged: (bool? newValue) {
-                      authenticationScreenVM.updateAdminRights(
-                          newValue ?? false);
-                    },
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
-                ),
+                // widget.isParent ? const SizedBox.shrink() : Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                //   child: CheckboxListTile(
+                //     checkboxShape: const CircleBorder(),
+                //     shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(10)),
+                //     contentPadding: EdgeInsets.zero,
+                //     title: Text(
+                //       "Admin Rights".tr,
+                //       style: Theme
+                //           .of(context)
+                //           .textTheme
+                //           .bodyLarge
+                //           ?.copyWith(color: AppTheme.blackColor),
+                //     ),
+                //     value: authenticationScreenVM.adminRights,
+                //     checkColor: AppTheme.whiteColor,
+                //     activeColor: AppTheme.primaryColor,
+                //     onChanged: (bool? newValue) {
+                //       authenticationScreenVM.updateAdminRights(
+                //           newValue ?? false);
+                //     },
+                //     controlAffinity: ListTileControlAffinity.leading,
+                //   ),
+                // ),
                 SizedBox(
                   height: 0.01.sh,
                 ),

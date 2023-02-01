@@ -7,6 +7,7 @@ import 'package:e_parent_kit/core/api/api_service.dart';
 import 'package:e_parent_kit/core/models/authentication/auth_data.model.dart';
 import 'package:e_parent_kit/core/models/authentication/authentication.model.dart';
 import 'package:e_parent_kit/core/models/notification/notifications.model.dart';
+import 'package:e_parent_kit/core/notifiers/chat.notifier.dart';
 import 'package:e_parent_kit/core/router/router_generator.dart';
 import 'package:e_parent_kit/core/view_models/bottom_nav_bar_VM.dart';
 import 'package:e_parent_kit/meta/utils/base_helper.dart';
@@ -191,7 +192,7 @@ class AuthenticationNotifier extends ChangeNotifier {
 
   }
 
-  Future<void> verifyOtp(String completePhone, String code) async {
+  Future<void> verifyOtp(String completePhone, String code, bool verification) async {
     var data = {
       "complete_phone" : completePhone,
       "code" : code,
@@ -204,7 +205,15 @@ class AuthenticationNotifier extends ChangeNotifier {
     );
 
     if(response != null){
-      if(response['status'] == true){
+      if(response['success'] == true){
+
+        if(verification == false){
+          print("Getting off");
+          navigationController.getOff(RouteGenerator.changePassword);
+          // BaseHelper.showSnackBar(response['message']);
+          return;
+        }
+
         navigationController.getOffAll(RouteGenerator.loginScreen);
         BaseHelper.showSnackBar(response['message']);
       }else{
@@ -214,12 +223,90 @@ class AuthenticationNotifier extends ChangeNotifier {
 
   }
 
+  Future<void> sendOtp(String phone) async {
+
+    var data = {
+      "complete_phone" : phone
+    };
+
+    var response = await ApiService.request(
+        ApiPaths.resendOtp,
+        method: RequestMethod.POST,
+        data: data
+    );
+
+    if(response != null) {
+      navigationController.navigateToNamedWithArg(RouteGenerator.otpScreen, {'isVerification' : false});
+      BaseHelper.showSnackBar('${response['message']}');
+    }
+
+  }
+
+  Future<void> changePassword(String phone, String password, bool forgot) async {
+
+    var data = {
+      "complete_phone" : phone,
+      "password" : password
+    };
+
+    var response = await ApiService.request(
+        ApiPaths.changePassword,
+        method: RequestMethod.POST,
+        data: data
+    );
+
+    if(response != null) {
+      if(response['success'] == true){
+        if(forgot){
+          navigationController.getOffAll(RouteGenerator.loginScreen);
+        }else{
+          navigationController.goBack();
+        }
+        BaseHelper.showSnackBar('${response['message']}');
+      }else{
+        BaseHelper.showSnackBar('${response['message']}');
+      }
+
+    }
+
+  }
+
   Future<void> logout(BuildContext context) async {
     context.read<BottomNavBarVM>().advancedDrawerController.hideDrawer();
     context.read<BottomNavBarVM>().bottomNavBarController.index = 0;
+
+    context.read<ChatNotifier>().currentRoomId = '';
+    context.read<ChatNotifier>().currentUser = AuthData();
+    context.read<ChatNotifier>().currentlyChattingWith = AuthData();
+
     HiveDatabase.storeValue(HiveDatabase.authToken, null);
     HiveDatabase.storeValue(HiveDatabase.loginCheck, false);
     navigationController.getOffAll(RouteGenerator.loginScreen);
+  }
+
+  Future<void> updateProfile({required String userId, required String fullName}) async {
+    var data = {
+      "full_name" : fullName,
+      "user_id" : userId,
+    };
+
+    var response = await ApiService.request(
+        ApiPaths.updateProfile,
+        method: RequestMethod.POST,
+        data: data
+    );
+
+    if(response != null){
+      if(response['success'] == true){
+        authModel.user!.fullName = fullName;
+        notifyListeners();
+        navigationController.goBack();
+        BaseHelper.showSnackBar(response['message']);
+      }else{
+        BaseHelper.showSnackBar(response['message']);
+      }
+    }
+
   }
 
 

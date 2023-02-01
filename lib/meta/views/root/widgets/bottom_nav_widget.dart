@@ -16,32 +16,7 @@ class BottomNavWidget extends StatelessWidget {
       controller: bottomNavBarVM.bottomNavBarController,
       onItemSelected: bottomNavBarVM.updateCurrentPageIndex,
       screens: bottomNavBarVM.screens(context),
-      items: [
-        PersistentBottomNavBarItem(
-          icon: Icon(CupertinoIcons.home),
-          title: ("Dashboard"),
-          activeColorPrimary: AppTheme.primaryColor,
-          inactiveColorPrimary: AppTheme.subtitleLightGreyColor,
-        ),
-        PersistentBottomNavBarItem(
-          icon: Icon(CupertinoIcons.calendar_today),
-          title: ("Attendance"),
-          activeColorPrimary: AppTheme.primaryColor,
-          inactiveColorPrimary: AppTheme.subtitleLightGreyColor,
-        ),
-        PersistentBottomNavBarItem(
-          icon: Icon(CupertinoIcons.chat_bubble_2),
-          title: ("Chat"),
-          activeColorPrimary: AppTheme.primaryColor,
-          inactiveColorPrimary: AppTheme.subtitleLightGreyColor,
-        ),
-        PersistentBottomNavBarItem(
-          icon: Icon(CupertinoIcons.person),
-          title: ("Profile"),
-          activeColorPrimary: AppTheme.primaryColor,
-          inactiveColorPrimary: AppTheme.subtitleLightGreyColor,
-        ),
-      ],
+      items: bottomNavBarVM.bottomNavbarItems(context),
       confineInSafeArea: true,
       backgroundColor: AppTheme.whiteColor, // Default is Colors.white.
       handleAndroidBackButtonPress: true, // Default is true.

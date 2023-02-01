@@ -1,3 +1,4 @@
+import 'package:e_parent_kit/core/notifiers/class.notifier.dart';
 import 'package:e_parent_kit/core/view_models/authentication_VM.dart';
 import 'package:e_parent_kit/meta/utils/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class AppDobTextField extends StatelessWidget {
-  const AppDobTextField({Key? key}) : super(key: key);
+  String text;
+  bool attendance;
+  bool diary;
+  bool leave;
+  AppDobTextField({Key? key, this.text = 'dob', this.attendance = false, this.diary = false, this.leave = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class AppDobTextField extends StatelessWidget {
       child: TextFormField(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
-          _showDatePicker(context, authenticationScreenVM);
+          _showDatePicker(context, authenticationScreenVM, attendance, diary, leave);
         },
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: AppTheme.blackColor,
@@ -27,9 +32,11 @@ class AppDobTextField extends StatelessWidget {
         controller: authenticationScreenVM.dobController,
         cursorWidth: 1,
         textInputAction: TextInputAction.done,
-        onChanged: (str) {},
+        onChanged: (str) {
+
+        },
         decoration: InputDecoration(
-          labelText: "*${"dob".tr}",
+          labelText: "*${"$text".tr}",
           hintText: "DD-MM-YYYY",
           floatingLabelBehavior: FloatingLabelBehavior.always,
           labelStyle: Theme.of(context)
@@ -52,7 +59,7 @@ class AppDobTextField extends StatelessWidget {
               onTap: () {
                 FocusScope.of(context).requestFocus(FocusNode());
 
-                _showDatePicker(context, authenticationScreenVM);
+                _showDatePicker(context, authenticationScreenVM, attendance, diary, leave);
               },
               child: const Icon(
                 Icons.calendar_today,
@@ -79,12 +86,12 @@ class AppDobTextField extends StatelessWidget {
     );
   }
 
-  void _showDatePicker(context, AuthenticationScreenVM authenticationScreenVM) {
+  void _showDatePicker(BuildContext context, AuthenticationScreenVM authenticationScreenVM, bool attendance, bool diary, bool leave) {
     DatePicker.showDatePicker(
       context,
-      maxTime: DateTime.now(),
+      maxTime: diary ?  DateTime.now().add(const Duration(days: 7)) : leave ? DateTime.now().add(const Duration(days: 30)) : DateTime.now(),
       currentTime: authenticationScreenVM.currentDob,
-      minTime: DateTime(1980, 1, 1),
+      minTime: diary ? DateTime.now().subtract(const Duration(days: 3))  : leave ? DateTime.now(): DateTime(1980, 1, 1),
       showTitleActions: true,
       // pickerModel: CustomPicker(currentTime: dob.toUtc(), locale: LocaleType.en, maxTime: DateTime.now(), minTime:  DateTime(1970, 1, 1)),
       theme: DatePickerTheme(
@@ -98,8 +105,14 @@ class AppDobTextField extends StatelessWidget {
             DateFormat("MM/dd/yyyy").format(date), date);
       },
       onConfirm: (date) {
-        authenticationScreenVM.updateDob(
-            DateFormat("MM/dd/yyyy").format(date), date);
+        authenticationScreenVM.updateDob(DateFormat("MM/dd/yyyy").format(date), date);
+        if(attendance){
+          // Call Api
+          context.read<ClassNotifier>().loadAttendanceFromDate(context);
+        }
+        if(diary){
+          context.read<ClassNotifier>().viewDiaryByDate(context);
+        }
       },
       // locale: Languages.getLocaleType(),
     );

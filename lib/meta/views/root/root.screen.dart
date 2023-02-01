@@ -79,13 +79,13 @@ class _RootScreenState extends State<RootScreen> {
             icon: const Icon(CupertinoIcons.line_horizontal_3),
           ),
           actions: [
-            bottomNavBarVM.bottomNavBarController.index == 2 ?
-                IconButton(splashRadius: 20, icon: Icon(CupertinoIcons.person_crop_circle_badge_checkmark),
-                  onPressed: () => navigationController.navigateToNamed(RouteGenerator.contactAdminChatScreen),) : const SizedBox.shrink()
+            IconButton(splashRadius: 20, icon: Icon(CupertinoIcons.person_crop_circle_badge_checkmark),
+              onPressed: () => navigationController.navigateToNamed(RouteGenerator.contactAdminChatScreen),)
           ],
         ),
         body: BottomNavWidget(),
       ),
     );
   }
+
 }

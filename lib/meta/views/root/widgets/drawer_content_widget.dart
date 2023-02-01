@@ -4,14 +4,18 @@ import 'package:e_parent_kit/app/constants/controller.constant.dart';
 import 'package:e_parent_kit/core/models/authentication/auth_data.model.dart';
 import 'package:e_parent_kit/core/models/student/student.model.dart';
 import 'package:e_parent_kit/core/notifiers/authentication.notifier.dart';
+import 'package:e_parent_kit/core/notifiers/chat.notifier.dart';
 import 'package:e_parent_kit/core/notifiers/class.notifier.dart';
 import 'package:e_parent_kit/core/notifiers/course.notifier.dart';
 import 'package:e_parent_kit/core/notifiers/parent.notifier.dart';
 import 'package:e_parent_kit/core/router/router_generator.dart';
 import 'package:e_parent_kit/core/view_models/bottom_nav_bar_VM.dart';
 import 'package:e_parent_kit/meta/utils/app_theme.dart';
+import 'package:e_parent_kit/meta/views/main/dashboard/my_previous_requests.screen.dart';
+import 'package:e_parent_kit/meta/views/main/dashboard/request_leave.screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -82,9 +86,26 @@ class _DrawerContentState extends State<DrawerContent> {
     );
   }
 
+  Widget _buildTeacherOptions() {
+    return Column(
+      children: [
+        // _buildListTile(
+        //   title: 'Upload Diary',
+        //   icon: CupertinoIcons.person_alt_circle_fill,
+        //   onTap: () {},
+        // ),
+      ],
+    );
+  }
+
   Widget _buildParentOptions() {
     return Column(
       children: [
+        _buildListTile(
+          title: 'Add Students',
+          icon: CupertinoIcons.add_circled,
+          onTap: () => Get.to(() => UpdateStudentsScreen()),
+        ),
         _buildListTile(
           title: 'Switch Student',
           icon: CupertinoIcons.shuffle,
@@ -147,10 +168,32 @@ class _DrawerContentState extends State<DrawerContent> {
           },
         ),
         _buildListTile(
-          title: 'Add Students',
-          icon: CupertinoIcons.add_circled,
-          onTap: () => Get.to(() => UpdateStudentsScreen()),
+          title: "${context.watch<ParentNotifier>().selectedStudentProfile?.fullName}'s Class Teacher",
+          icon: CupertinoIcons.bubble_left,
+          onTap: () async {
+            AuthenticationNotifier authNotifier = context.read<AuthenticationNotifier>();
+            ParentNotifier parentNotifier = context.read<ParentNotifier>();
+            EasyLoading.show();
+
+            await context.read<ChatNotifier>().createChatRoom(
+                first_user: authNotifier.authModel.user!.sId!,
+                second_user: parentNotifier.selectedStudentProfile!.classModel!.classTeacher!.sId!,
+                chattingWith: parentNotifier.selectedStudentProfile!.classModel!.classTeacher!,
+                context: context);
+
+
+            EasyLoading.dismiss();
+          },
         ),
+        _buildListTile(
+          title: 'Request a leave',
+          icon: CupertinoIcons.app_badge,
+          onTap: () => Get.to(() => RequestLeaveScreen()),
+        ),
+        _buildListTile(
+          title: 'My Previous Requests',
+          icon: CupertinoIcons.doc_append,
+          onTap: () => Get.to(() => MyPreviousRequestsScreen()),),
       ],
     );
   }
@@ -218,6 +261,11 @@ class _DrawerContentState extends State<DrawerContent> {
               authNotifier.authModel.user?.authRole == Role.Parent
                   ? _buildParentOptions()
                   : const SizedBox.shrink(),
+
+              authNotifier.authModel.user?.authRole == Role.Teacher
+                  ? _buildTeacherOptions()
+                  : const SizedBox.shrink(),
+
               _buildListTile(
                   title: 'Notifications',
                   icon: CupertinoIcons.bell,
@@ -249,12 +297,13 @@ class _DrawerContentState extends State<DrawerContent> {
                 title: 'Profile',
                 icon: CupertinoIcons.person,
                 onTap: () {
-                  context
-                      .read<BottomNavBarVM>()
-                      .advancedDrawerController
-                      .hideDrawer();
-                  context.read<BottomNavBarVM>().bottomNavBarController.index =
-                      3;
+                  context.read<BottomNavBarVM>().advancedDrawerController.hideDrawer();
+                  if(context.read<AuthenticationNotifier>().authModel.user!.role == Role.Parent){
+                    context.read<BottomNavBarVM>().bottomNavBarController.index = 3;
+                  }else{
+                    context.read<BottomNavBarVM>().bottomNavBarController.index = 2;
+                  }
+
                 },
               ),
               authNotifier.authModel.user?.authRole == Role.TeacherAdmin

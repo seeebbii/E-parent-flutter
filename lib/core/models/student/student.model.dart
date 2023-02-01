@@ -1,5 +1,7 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:e_parent_kit/core/models/class/class.model.dart';
 import 'package:e_parent_kit/core/models/course/course.model.dart';
+import 'package:flutter/material.dart';
 
 class StudentModel {
   ClassModel? classModel;
@@ -13,6 +15,8 @@ class StudentModel {
   String? updatedAt;
   int? iV;
   bool? selected;
+  final studentAttendanceStatusKey = GlobalKey<DropdownSearchState<String>>();
+  final statusTextEditingController = TextEditingController();
 
   StudentModel(
       {this.sId,

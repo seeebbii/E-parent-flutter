@@ -20,9 +20,11 @@ class ApiPaths {
   static String login =  "${baseURL}${authRoute}login";
   static String register =  "${baseURL}${authRoute}register";
   static String profile =  "${baseURL}${authRoute}profile";
+  static String updateProfile =  "${baseURL}${authRoute}edit_profile";
+  static String changePassword =  "${baseURL}${authRoute}change_password";
   static String userNotifications =  "${baseURL}${authRoute}notifications";
   static String updateNotificationStatus =  "${baseURL}${authRoute}update_notification_status";
-  static String requestOtp =  "${baseURL}request_otp";
+  static String resendOtp =  "${baseURL}${authRoute}resend";
   static String verifyOtp =  "${baseURL}${authRoute}verify";
   static String resetPassword =  "${baseURL}reset_password";
   static String logout =  "${baseURL}logout";
@@ -51,8 +53,26 @@ class ApiPaths {
   static String studentsInClass =  "${baseURL}${classRoute}students_in_class/";
   static String getTeacherClassDiary =  "${baseURL}${classRoute}view_teacher_class_diaries";
   static String getStudentClassDiary =  "${baseURL}${classRoute}view_class_diaries/";
+  static String viewDiaryByDate =  "${baseURL}${classRoute}view_diary_date/";
+  static String uploadClassDiary =  "${baseURL}${classRoute}create_diary/";
   static String assignStudents =  "${baseURL}${classRoute}assign_students/";
   static String updateClassTeacher =  "${baseURL}${classRoute}update_class_teacher/";
+  static String uploadClassAttendance =  "${baseURL}${classRoute}upload_class_attendance/";
+  static String viewClassAttendance =  "${baseURL}${classRoute}view_class_attendance/";
+  static String viewStudentClassAttendance =  "${baseURL}${classRoute}view_student_attendance/";
+
+  static String requestLeaveFromParent =  "${baseURL}${classRoute}request_leave/";
+  static String allLeaveRequests =  "${baseURL}${classRoute}view_request_leave/";
+  static String viewParentLeaveRequests =  "${baseURL}${classRoute}view_parent_request_leave/";
+
+  static String acceptRequest =  "${baseURL}${classRoute}accept_request_leave/";
+  static String rejectRequest =  "${baseURL}${classRoute}reject_request_leave/";
+
+  static String fetchParent =  "${baseURL}${classRoute}fetch_parent/";
+
+  static String uploadAcademics =  "${baseURL}${classRoute}upload_academics/";
+  static String uploadAssignment =  "${baseURL}${classRoute}upload_class_assignment/";
+  static String viewAcademics =  "${baseURL}${classRoute}view_academics/";
 
   // Chat Apis
   static String fetchAdminChats =  "${baseURL}${chatRoute}admin/";

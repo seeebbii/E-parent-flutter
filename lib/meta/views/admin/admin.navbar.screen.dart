@@ -70,29 +70,29 @@ class _AdminNavbarScreenState extends State<AdminNavbarScreen> {
                     color: Colors.deepOrangeAccent.shade100,
                   ),
                   GridviewItemWidget(
-                    onTap:  () => navigationController.navigateToNamed(RouteGenerator.parentsModuleScreen),
+                    onTap:  null,
                     imagePath: Assets.parentsIcon,
                     text: 'Parents',
                     color: Colors.blue.shade100,
                   ),
                   GridviewItemWidget(
-                    onTap:  () => navigationController.navigateToNamed(RouteGenerator.teachersModuleScreen),
+                    onTap:  null,
                     imagePath: Assets.teachersIcon,
                     text: 'Teachers',
                     color: Colors.green.shade100,
                   ),
                   GridviewItemWidget(
-                    onTap:  () => navigationController.navigateToNamed(RouteGenerator.adminRequestsModuleScreen),
+                    onTap:  null,
                     imagePath: Assets.adminRequest,
                     text: 'Admin Requests',
                     color: Colors.brown.shade200,
                   ),
-                  GridviewItemWidget(
-                    onTap:  () => navigationController.navigateToNamed(RouteGenerator.accountsModuleScreen),
-                    imagePath: Assets.accountIcon,
-                    text: 'Manage Accounts',
-                    color: Colors.red.shade200,
-                  ),
+                  // GridviewItemWidget(
+                  //   onTap:  () => navigationController.navigateToNamed(RouteGenerator.accountsModuleScreen),
+                  //   imagePath: Assets.accountIcon,
+                  //   text: 'Manage Accounts',
+                  //   color: Colors.red.shade200,
+                  // ),
                 ],
               ),
               SizedBox(

@@ -1,5 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class AppDropdown extends StatelessWidget {
@@ -46,33 +47,31 @@ class AppDropdown extends StatelessWidget {
       key: myKey,
       items: contentList,
       dropdownDecoratorProps: DropDownDecoratorProps(
+        baseStyle: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
         dropdownSearchDecoration: InputDecoration(
           hintText: hintText,
-          contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
+          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 0.05.sw),
+
           fillColor: Colors.white,
           filled: true,
-          border: const OutlineInputBorder(
+          border: const UnderlineInputBorder(
               borderRadius: BorderRadius.all(
             Radius.circular(8.0),
           )),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(8.0),
-            ),
-            borderSide: BorderSide(color: Colors.blue.shade600, width: 1.5),
-          ),
-          enabledBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(4.0),
-            ),
-            borderSide: BorderSide(color: Colors.black, width: 0.0),
-          ),
+          focusedBorder: const UnderlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(8.0),
+              )),
+          enabledBorder: const UnderlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(8.0),
+              )),
           floatingLabelBehavior: FloatingLabelBehavior.always,
           labelStyle: const TextStyle(
               height: 0.7,
               color: Colors.black,
               // fontSize: size.height * 0.022,
-              fontWeight: FontWeight.normal),
+              fontWeight: FontWeight.bold),
         ),
       ),
       // compareFn: (i1, i2) => i1 == i2,

@@ -1,5 +1,6 @@
 import 'package:e_parent_kit/app/constants/assets.constant.dart';
 import 'package:e_parent_kit/components/widgets/app_appbar.dart';
+import 'package:e_parent_kit/core/notifiers/authentication.notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:e_parent_kit/app/constants/assets.constant.dart';
 import 'package:e_parent_kit/app/constants/controller.constant.dart';
@@ -12,6 +13,7 @@ import 'package:e_parent_kit/meta/utils/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -33,11 +35,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   void _trySubmit() async {
     final isValid = context.read<AuthenticationScreenVM>().forgotPassFormKey.currentState!.validate();
+    AuthenticationScreenVM authVm = context.read<AuthenticationScreenVM>();
     FocusScope.of(context).unfocus();
 
     if(isValid){
       // Send OTP api and prompt user to OTP verification screen
-      navigationController.navigateToNamed(RouteGenerator.changePassword);
+
+      EasyLoading.show();
+
+      await context.read<AuthenticationNotifier>().sendOtp(authVm.countryCode + authVm.phoneController.text.trim());
+
+      EasyLoading.dismiss();
+
     }
   }
 

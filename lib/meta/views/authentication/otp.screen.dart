@@ -23,9 +23,9 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-
   TextEditingController otpController = TextEditingController();
-  StreamController<ErrorAnimationType> otpErrorController = StreamController<ErrorAnimationType>();
+  StreamController<ErrorAnimationType> otpErrorController =
+      StreamController<ErrorAnimationType>();
 
   void _trySubmit() async {
     final isValid = context
@@ -39,7 +39,9 @@ class _OtpScreenState extends State<OtpScreen> {
       // Verify OTP request
       EasyLoading.show();
 
-      await context.read<AuthenticationNotifier>().verifyOtp("${context.read<AuthenticationScreenVM>().countryCode}${context.read<AuthenticationScreenVM>().phoneNumberWithoutCountryCode}", otpController.text.trim());
+      await context.read<AuthenticationNotifier>().verifyOtp(
+          "${context.read<AuthenticationScreenVM>().countryCode}${context.read<AuthenticationScreenVM>().phoneNumberWithoutCountryCode}",
+          otpController.text.trim(), widget.isVerification);
 
       EasyLoading.dismiss();
     }
@@ -82,12 +84,12 @@ class _OtpScreenState extends State<OtpScreen> {
                     height: 0.05.sh,
                   ),
 
-                  Form(key: authVm.otpFormKey,
+                  Form(
+                      key: authVm.otpFormKey,
                       child: OTPTextField(
                         otpController: otpController,
                         errorAnimationController: otpErrorController,
-                      )
-                  ),
+                      )),
 
                   SizedBox(
                     height: 0.03.sh,
